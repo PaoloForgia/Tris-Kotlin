@@ -97,25 +97,25 @@ class Table {
         return allTheSame
     }
 
+    fun getEmptyTable(): Array<Array<Char>> {
+        var table = arrayOf<Array<Char>>()
+
+        for (i in 0..2) {
+            var row = arrayOf<Char>()
+            for (j in 0..2) {
+                row += Table.EMPTY
+            }
+            table += row
+        }
+
+        return table
+    }
+
     companion object {
 
         const val X = 'X'
         const val O = 'O'
         const val EMPTY = '\u0000' // Null value
-
-        fun getEmptyTable(): Array<Array<Char>> {
-            var table = arrayOf<Array<Char>>()
-
-            for (i in 0..2) {
-                var row = arrayOf<Char>()
-                for (j in 0..2) {
-                    row += Table.EMPTY
-                }
-                table += row
-            }
-
-            return table
-        }
 
         fun getXCoordinate(coordinate: String): Int {
             return when (coordinate[0]) {
