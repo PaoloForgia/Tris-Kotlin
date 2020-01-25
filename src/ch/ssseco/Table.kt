@@ -4,7 +4,7 @@ class Table {
 
     private var table: Array<Array<Char>>
 
-    constructor() {
+    init {
         table = getEmptyTable()
     }
 
@@ -51,7 +51,7 @@ class Table {
         var emptySpots = false
         for (row in table) {
             for (cell in row) {
-                if (cell == Table.EMPTY) {
+                if (cell == EMPTY) {
                     emptySpots = true
                     break
                 }
@@ -97,13 +97,13 @@ class Table {
         return allTheSame
     }
 
-    fun getEmptyTable(): Array<Array<Char>> {
+    private fun getEmptyTable(): Array<Array<Char>> {
         var table = arrayOf<Array<Char>>()
 
         for (i in 0..2) {
             var row = arrayOf<Char>()
             for (j in 0..2) {
-                row += Table.EMPTY
+                row += EMPTY
             }
             table += row
         }
