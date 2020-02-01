@@ -15,7 +15,9 @@ class AIPlayer(private val myCharacter: Char, private val opponentCharacter: Cha
             // Choose position based on table
             analizeTable(table)
 
-            return getHighestValueCoordinate()
+            val coordinate = getHighestValueCoordinate()
+            println(coordinate)
+            coordinate
         }
 
         // Since the coordinate is not manually entered, print it
@@ -67,34 +69,79 @@ class AIPlayer(private val myCharacter: Char, private val opponentCharacter: Cha
 
                 // If is center +50
                 rowScore += if (rowIndex == 1 && columnIndex == 1) {
-                    var value = 50
-                    // Check cells around
-
-                    value
+                    20
                 }
                 // If is side +10
                 else if ((columnIndex == 1 && (rowIndex == 0 || rowIndex == 2)) ||
                     (rowIndex == 1 && (columnIndex == 0 || columnIndex == 2))) {
-                    var value = 10
-
-                    value
+                    10
                 }
                 // Is corner +25
                 else {
-                    var value = 25
-
-                    value
+                    15
                 }
             }
             tableValue += rowScore
         }
+
+        // Check cells
+        for (rowIndex in trisTable.indices) {
+            val row = trisTable[rowIndex]
+            for (columnIndex in row.indices) {
+                val cell = trisTable[rowIndex][columnIndex]
+                if (cell == Table.EMPTY) {
+                    // Do nothing
+                    continue
+                }
+
+                val isOpponentCell = cell == this.opponentCharacter
+                if (rowIndex > 0) {
+                    increaseCellValue(table, rowIndex - 1, columnIndex, isOpponentCell)
+                }
+
+                if (rowIndex < 2) {
+                    increaseCellValue(table, rowIndex + 1, columnIndex, isOpponentCell)
+                }
+
+                if (columnIndex > 0) {
+                    increaseCellValue(table, rowIndex, columnIndex - 1, isOpponentCell)
+                }
+
+                if (columnIndex < 2) {
+                    increaseCellValue(table, rowIndex, columnIndex + 1, isOpponentCell)
+                }
+
+                if  (rowIndex > 0 && columnIndex > 0) {
+                    increaseCellValue(table, rowIndex - 1, columnIndex - 1, isOpponentCell)
+                }
+
+                if  (rowIndex < 2 && columnIndex < 2) {
+                    increaseCellValue(table, rowIndex + 1, columnIndex + 1, isOpponentCell)
+                }
+
+                if  (rowIndex > 0 && columnIndex < 2) {
+                    increaseCellValue(table, rowIndex - 1, columnIndex + 1, isOpponentCell)
+                }
+
+                if  (rowIndex < 2 && columnIndex > 0) {
+                    increaseCellValue(table, rowIndex + 1, columnIndex - 1, isOpponentCell)
+                }
+            }
+        }
+
 
         println("\tA\tB\tC\n")
         for (i in tableValue.indices) {
             val row = tableValue[i]
             println(i.toString() + "\t" + row[0] + "\t" + row[1] + "\t" + row[2])
         }
+    }
 
+    private fun increaseCellValue(table: Table, rowIndex: Int, columnIndex: Int, isOpponentCell: Boolean) {
+        val nearCell = table.getCell(rowIndex, columnIndex)
+        if (nearCell == Table.EMPTY) {
+            tableValue[rowIndex][columnIndex] += if (isOpponentCell) 5 else 10
+        }
     }
 
     private fun random(): Int {
