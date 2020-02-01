@@ -69,7 +69,7 @@ class AIPlayer(private val myCharacter: Char, private val opponentCharacter: Cha
 
                 // If is center +50
                 rowScore += if (rowIndex == 1 && columnIndex == 1) {
-                    20
+                    50
                 }
                 // If is side +10
                 else if ((columnIndex == 1 && (rowIndex == 0 || rowIndex == 2)) ||
@@ -78,7 +78,7 @@ class AIPlayer(private val myCharacter: Char, private val opponentCharacter: Cha
                 }
                 // Is corner +25
                 else {
-                    15
+                    25
                 }
             }
             tableValue += rowScore
@@ -140,7 +140,7 @@ class AIPlayer(private val myCharacter: Char, private val opponentCharacter: Cha
     private fun increaseCellValue(table: Table, rowIndex: Int, columnIndex: Int, isOpponentCell: Boolean) {
         val nearCell = table.getCell(rowIndex, columnIndex)
         if (nearCell == Table.EMPTY) {
-            tableValue[rowIndex][columnIndex] += if (isOpponentCell) 5 else 10
+            tableValue[rowIndex][columnIndex] += if (isOpponentCell) 10 else 20
         }
     }
 
