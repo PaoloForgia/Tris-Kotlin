@@ -8,12 +8,12 @@ class Table {
         table = getEmptyTable()
     }
 
-    fun getCell(y: Int, x: Int): Char {
-        return table[y][x]
+    fun getCell(row: Int, column: Int): Char {
+        return table[row][column]
     }
 
-    fun setCell(y: Int, x: Int, value: Char) {
-        table[y][x] = value
+    fun setCell(row: Int, column: Int, value: Char) {
+        table[row][column] = value
     }
 
     fun printTable() {
@@ -23,6 +23,10 @@ class Table {
             val row = table[i]
             println(i.toString() + "\t" + row[0] + "\t" + row[1] + "\t" + row[2])
         }
+    }
+
+    fun getTable(): Array<Array<Char>> {
+        return table
     }
 
     fun checkForWin(character: Char): Boolean {
