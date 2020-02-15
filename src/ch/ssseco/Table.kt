@@ -8,12 +8,20 @@ class Table {
         table = getEmptyTable()
     }
 
-    fun getCell(row: Int, column: Int): Char {
-        return table[row][column]
+    fun getCell(move: Move): Char {
+        return getCell(move.row, move.col)
     }
 
-    fun setCell(row: Int, column: Int, value: Char) {
-        table[row][column] = value
+    fun getCell(row: Int, col: Int): Char {
+        return table[row][col]
+    }
+
+    fun setCell(move: Move, value: Char) {
+        setCell(move.row, move.col, value)
+    }
+
+    fun setCell(row: Int, col: Int, value: Char) {
+        table[row][col] = value
     }
 
     fun printTable() {
@@ -25,80 +33,62 @@ class Table {
         }
     }
 
-    fun getTable(): Array<Array<Char>> {
-        return table
-    }
+    fun evaluateWin(): Int {
+        val player = X
+        val opponent = O
 
-    fun checkForWin(character: Char): Boolean {
-        // Check for horizontal win
-        if (horizontalWin(character))
-            return true
-
-
-        // Check for vertical win
-        if (verticalWin(character))
-            return true
-
-        // Check for diagonal win
-        if (diagonalWin(character, false))
-            return true
-
-
-        // Check for opposite diagonal win
-        if (diagonalWin(character, true))
-            return true
-
-        return false
-    }
-
-    fun checkForEmptySposts(): Boolean {
-        var emptySpots = false
-        for (row in table) {
-            for (cell in row) {
-                if (cell == EMPTY) {
-                    emptySpots = true
-                    break
+        // Checking for Rows for X or O victory.
+        for (row in 0..2) {
+            if (table[row][0] == table[row][1]
+                && table[row][1] == table[row][2]
+            ) {
+                if (table[row][0] == player) {
+                    return +10
+                } else if (table[row][0] == opponent) {
+                    return -10
                 }
             }
         }
-        return emptySpots
-    }
-
-    private fun horizontalWin(character: Char): Boolean {
-        var allTheSame = true
-        for (i in table.indices) {
-            if (table[0][i] != character) {
-                allTheSame = false
-                break
+        // Checking for Columns for X or O victory.
+        for (col in 0..2) {
+            if (table[0][col] == table[1][col]
+                && table[1][col] == table[2][col]
+            ) {
+                if (table[0][col] == player) {
+                    return +10
+                } else if (table[0][col] == opponent) {
+                    return -10
+                }
             }
         }
-
-        return allTheSame
-    }
-
-    private fun verticalWin(character: Char): Boolean {
-        var allTheSame = true
-        for (i in table.indices) {
-            if (table[i][0] != character) {
-                allTheSame = false
-                break
+        // Checking for Diagonals for X or O victory.
+        if (table[0][0] == table[1][1] && table[1][1] == table[2][2]) {
+            if (table[0][0] == player) {
+                return +10
+            } else if (table[0][0] == opponent) {
+                return -10
             }
         }
-
-        return allTheSame
-    }
-
-    private fun diagonalWin(character: Char, opposite: Boolean): Boolean {
-        var allTheSame = true
-        for (i in table.indices) {
-            val cell = if (opposite) table[i][2 - i] else table[i][i]
-            if (cell != character) {
-                allTheSame = false
-                break
+        if (table[0][2] == table[1][1] && table[1][1] == table[2][0]) {
+            if (table[0][2] == player) {
+                return +10
+            } else if (table[0][2] == opponent) {
+                return -10
             }
         }
+        // Else if none of them have won then return 0
+        return 0
+    }
 
-        return allTheSame
+    fun isTableFull(): Boolean {
+        for (row in table) {
+            for (cell in row) {
+                if (cell == EMPTY) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     private fun getEmptyTable(): Array<Array<Char>> {
@@ -121,7 +111,7 @@ class Table {
         const val O = 'O'
         const val EMPTY = '\u0000' // Null value
 
-        fun getXCoordinate(coordinate: String): Int {
+        fun getColumnCoordinate(coordinate: String): Int {
             return when (coordinate[0]) {
                 'A' -> 0
                 'B' -> 1
@@ -130,7 +120,7 @@ class Table {
             }
         }
 
-        fun getYCoordinate(coordinate: String): Int {
+        fun getRowCoordinate(coordinate: String): Int {
             return Character.getNumericValue(coordinate[1])
         }
 

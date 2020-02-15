@@ -2,7 +2,7 @@ package ch.ssseco
 
 import kotlin.random.Random
 
-class AIPlayer(private val myCharacter: Char, private val opponentCharacter: Char) {
+class AIPlayer(myCharacter: Char, opponentCharacter: Char) {
 
     private val minmax = Minmax(myCharacter, opponentCharacter)
 
@@ -14,7 +14,7 @@ class AIPlayer(private val myCharacter: Char, private val opponentCharacter: Cha
         } else {
             // Choose position based on table
 
-            val move = minmax.findBestMove(table.getTable())
+            val move = minmax.findBestMove(table)
 
             Table.indexToCoordinate(move.col, move.row)
         }

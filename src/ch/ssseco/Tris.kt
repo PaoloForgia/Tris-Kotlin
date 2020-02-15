@@ -48,12 +48,13 @@ class Tris {
             println("\n\n\nInserire coordinata: ")
             val coordinate = if (aiTurn) aiPlayer.getCoordinate(table, turn) else scanner.next().toUpperCase()
 
-            val x = Table.getXCoordinate(coordinate)
-            val y = Table.getYCoordinate(coordinate)
+            val move = Move()
+            move.col = Table.getColumnCoordinate(coordinate)
+            move.row = Table.getRowCoordinate(coordinate)
 
-            val cell = table.getCell(y, x)
+            val cell = table.getCell(move)
             if (cell == Table.EMPTY) {
-                table.setCell(y, x, character)
+                table.setCell(move, character)
             } else {
                 println("La cella è occupata, perdi il turno... stronzo")
             }
@@ -62,21 +63,23 @@ class Tris {
     }
 
     private fun canContinue(): Boolean {
+        val score = table.evaluateWin()
+
         // Check if someone won
-        if (table.checkForWin(Table.X)) {
+        if (score == 10) {
             table.printTable()
             println("$player1 ha vinto")
             return false
         }
 
-        if (table.checkForWin(Table.O)) {
+        if (score == -10) {
             table.printTable()
             println("$player2 ha vinto")
             return false
         }
 
         // Check if there are empty spots in the table
-        if (!table.checkForEmptySposts()) {
+        if (!table.isTableFull()) {
             table.printTable()
             println("Il campo è pieno, pareggio!")
             return false
