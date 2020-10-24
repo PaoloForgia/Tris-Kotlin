@@ -1,9 +1,11 @@
 package ch.ssseco
 
+import ch.ssseco.swing.UITris
 import java.util.*
 
 fun main() {
-    Tris().start()
+    // Tris().start()
+    UITris()
 }
 
 class Tris {
